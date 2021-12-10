@@ -71,16 +71,16 @@ public class GreetingsController {
 
 		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
 	}
-	
+
 	/* ATUALIZAR */
 	@PutMapping(value = "atualizar") /* Mapeia a URL */
 	@ResponseBody /* Descrição da resposta */
-	public ResponseEntity<?> atualizar(@RequestBody Usuario usuario) { 
-		
+	public ResponseEntity<?> atualizar(@RequestBody Usuario usuario) {
+
 		if (usuario.getId() == null) {
 			return new ResponseEntity<String>("Id não foi informado para atualização.", HttpStatus.OK);
 		}
-		
+
 		Usuario user = usuarioRepository.saveAndFlush(usuario);
 
 		return new ResponseEntity<Usuario>(user, HttpStatus.OK);
@@ -95,14 +95,24 @@ public class GreetingsController {
 
 		return new ResponseEntity<String>("User deletado com sucesso", HttpStatus.OK);
 	}
-	
-	/* BUSCAR */
+
+	/* BUSCAR POR ID */
 	@GetMapping(value = "buscar") /* Mapeia a URL */
 	@ResponseBody /* Descrição da resposta */
-	public ResponseEntity<Usuario> buscar(@RequestParam(name = "iduser") Long iduser) { /* Recebe os dados para consultar */
+	public ResponseEntity<Usuario> buscar(
+			@RequestParam(name = "iduser") Long iduser) { /* Recebe os dados para consultar */
 
 		Usuario usuario = usuarioRepository.findById(iduser).get();
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+	}
+
+	/* BUSCAR POR NOME */
+	@GetMapping(value = "buscarpornome") /* Mapeia a URL */
+	@ResponseBody /* Descrição da resposta */
+	public ResponseEntity<List<Usuario>> buscarpornome(@RequestParam(name = "name") String name) {
+
+		List<Usuario> usuario = usuarioRepository.buscarPorNome(name.trim().toUpperCase());
+		return new ResponseEntity<List<Usuario>>(usuario, HttpStatus.OK);
 	}
 
 }
