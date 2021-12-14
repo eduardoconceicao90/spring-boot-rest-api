@@ -16,6 +16,7 @@
 	<h1>Spring Boot REST API</h1>
 
 	<form action="" id="formCadastroUser">
+	
 		<div class="mb-3">
 			<label for="id" class="form-label">Id</label> <input type="text"
 				class="form-control" id="id" readonly="readonly">
@@ -34,6 +35,7 @@
 	</form>
 
 	<button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
+	<button type="button" class="btn btn-secondary" onclick="document.getElementById('formCadastroUser').reset();">Novo</button>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -46,11 +48,24 @@
 
 	<script type="text/javascript">
 		function salvarUsuario() {
-			var id = $("#id").val();	
-			var nome = $("#nome").val();			
+			var id = $("#id").val();
+			var nome = $("#nome").val();
 			var idade = $("#idade").val();
-			
-			
+
+			$.ajax({
+				method: "POST",
+				url: "salvar",
+				data: JSON.stringify({id : id, nome : nome, idade : idade}),
+				contentType: "application/json; charset=utf-8",
+				success: function(response) {
+					
+					$("#id").val(response.id);
+					alert("Salvo com sucesso");
+				}
+			}).fail(function(xhr, status, erroThrown) {
+				alert("Erro ao salvar: " + xhr.responseText);
+			});
+
 		}
 	</script>
 </body>
