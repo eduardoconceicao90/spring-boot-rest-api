@@ -10,13 +10,13 @@
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 
-<title>CRUD JDev Treinamento</title>
+<title>JDev Treinamento</title>
 </head>
 <body>
-	<h1>Spring Boot REST API</h1>
+	<h1>Spring Boot REST API CRUD</h1>
 
 	<form action="" id="formCadastroUser">
-	
+
 		<div class="mb-3">
 			<label for="id" class="form-label">Id</label> <input type="text"
 				class="form-control" id="id" readonly="readonly">
@@ -35,7 +35,53 @@
 	</form>
 
 	<button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
-	<button type="button" class="btn btn-secondary" onclick="document.getElementById('formCadastroUser').reset();">Novo</button>
+	<button type="button" class="btn btn-secondary"
+		onclick="document.getElementById('formCadastroUser').reset();">Novo</button>
+	<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+		data-bs-target="#ModalPesquisarUser">Pesquisar</button>
+
+	<div class="modal fade" id="ModalPesquisarUser" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Pesquisa de
+						usuário</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="nameBusca" class="col-form-label">Informar
+								nome:</label> <input type="text" class="form-control" id="nameBusca">
+						</div>
+						<button type="button" class="btn btn-success"
+							onclick="pesquisaUser()">Buscar</button>
+					</form>
+
+					<table class="table" id="tabelaResultados">
+						<thead>
+							<tr>
+								<th scope="col">Id</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Idade</th>
+								<th scope="col">Editar</th>
+							</tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -47,25 +93,83 @@
 		crossorigin="anonymous"></script>
 
 	<script type="text/javascript">
+		function pesquisaUser() {
+			var nome = $("#nameBusca").val();
+
+			if (nome != null && nome.trim() != " ") {
+
+				$
+						.ajax(
+								{
+									method : "GET",
+									url : "buscarpornome",
+									data : "name=" + nome,
+									success : function(response) {
+										$("#tabelaResultados > tbody > tr")
+												.remove();
+
+										for (var i = 0; i < response.length; i++) {
+											$("#tabelaResultados > tbody")
+													.append(
+															'<tr><td>'
+																	+ response[i].id
+																	+ '</td><td>'
+																	+ response[i].nome
+																	+ '</td><td>'
+																	+ response[i].idade
+																	+ '</td><td><button type="button" onclick="colocarEmEdicao('
+																	+ response[i].id
+																	+ ')" class="btn btn-primary">Ver</button></td></tr>');
+										}
+									}
+								}).fail(
+								function(xhr, status, erroThrown) {
+									alert("Erro ao buscar usuário: "
+											+ xhr.responseText);
+								});
+
+			}
+		}
+
+		function colocarEmEdicao(id) {
+			$.ajax({
+				method : "GET",
+				url : "buscarporid",
+				data : "iduser=" + id,
+				success : function(response) {
+					$("#id").val(response.id);
+					$("#nome").val(response.nome);
+					$("#idade").val(response.idade);
+
+					$("#ModalPesquisarUser").modal("hide");
+				}
+			}).fail(function(xhr, status, erroThrown) {
+				alert("Erro ao buscar usuário por id: " + xhr.responseText);
+			});
+
+		}
+
 		function salvarUsuario() {
 			var id = $("#id").val();
 			var nome = $("#nome").val();
 			var idade = $("#idade").val();
 
 			$.ajax({
-				method: "POST",
-				url: "salvar",
-				data: JSON.stringify({id : id, nome : nome, idade : idade}),
-				contentType: "application/json; charset=utf-8",
-				success: function(response) {
-					
+				method : "POST",
+				url : "salvar",
+				data : JSON.stringify({
+					id : id,
+					nome : nome,
+					idade : idade
+				}),
+				contentType : "application/json; charset=utf-8",
+				success : function(response) {
 					$("#id").val(response.id);
 					alert("Salvo com sucesso");
 				}
 			}).fail(function(xhr, status, erroThrown) {
 				alert("Erro ao salvar: " + xhr.responseText);
 			});
-
 		}
 	</script>
 </body>

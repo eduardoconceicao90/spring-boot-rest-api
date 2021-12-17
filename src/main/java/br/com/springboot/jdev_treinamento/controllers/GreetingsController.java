@@ -72,7 +72,7 @@ public class GreetingsController {
 	// -----------------------------------------------
 
 	/* BUSCAR POR ID */
-	@GetMapping(value = "buscarpoid") /* Mapeia a URL */
+	@GetMapping(value = "buscarporid") /* Mapeia a URL */
 	@ResponseBody /* Descrição da resposta */
 	public ResponseEntity<Usuario> buscarpoid(@RequestParam(name = "iduser") Long iduser) { /* Recebe os dados para consultar */
 
