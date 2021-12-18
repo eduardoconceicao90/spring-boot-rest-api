@@ -25,16 +25,6 @@ public class GreetingsController {
 
 	/* ----------- C R U D ----------- */
 
-	/* LISTAR */
-	@GetMapping(value = "listatodos")
-	@ResponseBody
-	public ResponseEntity<List<Usuario>> listaUsuario() {
-
-		List<Usuario> usuarios = usuarioRepository.findAll();
-
-		return new ResponseEntity<List<Usuario>>(usuarios, HttpStatus.OK);
-	}
-
 	/* SALVAR */
 	@PostMapping(value = "salvar") /* Mapeia a URL */
 	@ResponseBody /* Descrição da resposta */
@@ -43,6 +33,16 @@ public class GreetingsController {
 		Usuario user = usuarioRepository.save(usuario);
 
 		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
+	}
+
+	/* LISTAR */
+	@GetMapping(value = "listartodos")
+	@ResponseBody
+	public ResponseEntity<List<Usuario>> listarUsuario() {
+
+		List<Usuario> usuarios = usuarioRepository.findAll();
+
+		return new ResponseEntity<List<Usuario>>(usuarios, HttpStatus.OK);
 	}
 
 	/* ATUALIZAR */
@@ -74,7 +74,8 @@ public class GreetingsController {
 	/* BUSCAR POR ID */
 	@GetMapping(value = "buscarporid") /* Mapeia a URL */
 	@ResponseBody /* Descrição da resposta */
-	public ResponseEntity<Usuario> buscarpoid(@RequestParam(name = "iduser") Long iduser) { /* Recebe os dados para consultar */
+	public ResponseEntity<Usuario> buscarpoid(
+			@RequestParam(name = "iduser") Long iduser) { /* Recebe os dados para consultar */
 
 		Usuario usuario = usuarioRepository.findById(iduser).get();
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
