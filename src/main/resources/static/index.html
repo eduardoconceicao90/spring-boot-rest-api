@@ -10,6 +10,14 @@
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 
+<style type="text/css">
+html {
+	margin-left: 90px;
+	margin-right: 90px;
+	margin-top: 5%;
+}
+</style>
+
 <title>JDev Treinamento</title>
 </head>
 <body>
@@ -62,20 +70,22 @@
 							onclick="pesquisaUser()">Buscar</button>
 					</form>
 
-					<table class="table" id="tabelaResultados">
-						<thead>
-							<tr>
-								<th scope="col">Id</th>
-								<th scope="col">Nome</th>
-								<th scope="col">Idade</th>
-								<th scope="col">Editar</th>
-								<th scope="col">Deletar</th>
-							</tr>
-						</thead>
-						<tbody>
+					<div style="height: 300px; overflow: scroll;">
+						<table class="table" id="tabelaResultados">
+							<thead>
+								<tr>
+									<th scope="col">Id</th>
+									<th scope="col">Nome</th>
+									<th scope="col">Idade</th>
+									<th scope="col">Editar</th>
+									<th scope="col">Deletar</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
 
-						</tbody>
-					</table>
+					</div>
 
 				</div>
 				<div class="modal-footer">
@@ -140,9 +150,14 @@
 
 		function botaoDeletarDaTela() {
 			var id = $("#id").val();
-			deleteUser(id);
 
-			document.getElementById('formCadastroUser').reset();
+			if (id != null && id.trim() != "") {
+				deleteUser(id);
+				document.getElementById('formCadastroUser').reset();
+			} else {
+				alert("Nenhum usário selecionado")
+			}
+
 		}
 
 		function deleteUser(id) {
@@ -188,6 +203,18 @@
 			var nome = $("#nome").val();
 			var idade = $("#idade").val();
 
+			if (nome == null || nome != null && nome.trim() == "") {
+				$("#nome").focus();
+				alert("Informe o nome");
+				return;
+			}
+			
+			if (idade == null || idade != null && idade.trim() == "") {
+				$("#idade").focus();
+				alert("Informe a idade");
+				return;
+			}
+
 			$.ajax({
 				method : "POST",
 				url : "salvar",
@@ -204,7 +231,6 @@
 			}).fail(function(xhr, status, erroThrown) {
 				alert("Erro ao salvar: " + xhr.responseText);
 			});
-
 		}
 	</script>
 </body>
