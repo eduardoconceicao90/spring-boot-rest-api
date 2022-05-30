@@ -1,4 +1,4 @@
-# CRUD com Spring Boot REST API
+# Spring Boot REST API
 
 <h3>Aplicação CRUD para cadastramento de usuário, seguindo padrão REST API</h3>
 
