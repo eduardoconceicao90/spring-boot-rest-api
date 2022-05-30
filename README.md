@@ -1,4 +1,4 @@
 # CRUD com Spring Boot REST API
 
 Deploy no Heroku:
-http://spring-boot-jdev-treinamento.herokuapp.com/springboot-rest-api-sample/
+http://projeto-spring-boot-rest-api.herokuapp.com/springboot-rest-api-sample/
